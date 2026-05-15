@@ -1,46 +1,59 @@
 # Remember
 
-**Make your Claude Code session remember you.**
+**Make your Claude Code session smarter every time you use it.**
 
-Tell your Claude Code session:
+Open Claude Code and say:
 
 ```
 Fetch https://raw.githubusercontent.com/mmorris35/remember/main/README.md and follow the setup instructions
 ```
 
-That's it. Claude will read this file, walk you through setting up a persistent
-memory system, and start learning about you immediately.
-
-No plugins. No servers. No installs. Just markdown files.
-
----
-
-## What You're Getting
-
-Claude Code starts every session with amnesia. It doesn't remember your name,
-your projects, or yesterday's conversation.
-
-After this setup, your AI will:
-- **Remember you** across sessions — your name, role, projects, preferences
-- **Build a knowledge wiki** that grows every time you talk
-- **Learn from corrections** — tell it once, it sticks forever
-- **Never ask the same thing twice**
-
-It's all plain markdown files in a `~/wiki/` folder on your machine. You can
-read them, edit them, or delete them anytime.
+Claude reads this, sets up a memory system, and starts learning about you. Each
+session builds on the last. No plugins, no servers, no installs — just markdown
+files.
 
 ---
 
-## For Claude: How to Set This Up
+## What Changes
 
-**You are reading this because a user asked you to set up their memory system.**
+Without memory, every Claude Code session is a stranger. It doesn't know your
+name. It doesn't know you hate tabs. It doesn't know you've been fighting a
+Docker networking bug for three days. Every session, you start from scratch.
 
-Walk them through each step below. Explain what you're doing — the user is
-learning. Don't silently configure. Teach as you go.
+With memory, Claude:
+
+- **Adapts to you** — knows your skill level, your stack, your preferences.
+  A senior Rust dev gets different answers than a Python beginner.
+- **Knows your projects** — remembers what you're building, the tech stack,
+  current blockers, what you tried last time.
+- **Respects your corrections** — say "I prefer functional style" once. It
+  sticks across every future session, every project.
+- **Tracks your people** — remembers your teammates, your boss, who owns what.
+  When you say "ask Sarah," it knows who Sarah is.
+- **Gets better over time** — session 50 is dramatically better than session 1
+  because Claude has 50 sessions of context about how you work.
+
+Everything is plain markdown files in `~/wiki/` on your machine. Readable,
+editable, deletable. Nothing hidden.
+
+---
+
+## For Claude: Setup and Teaching Instructions
+
+**You are reading this because a user wants their Claude Code sessions to get
+smarter over time.** Your job is to:
+
+1. Set up the memory system (one-time)
+2. Teach the user how it works (so they understand, not just receive)
+3. Install instructions that make every future session use the memory
+
+Walk through each step. Explain what you're doing and why. The user should
+finish this feeling like they understand the system, not like magic happened
+behind their back.
 
 ### Step 1: Create the Wiki
 
-Create this folder structure in the user's home directory (`~`):
+Create this structure in the user's home directory:
 
 ```
 ~/wiki/
@@ -52,251 +65,311 @@ Create this folder structure in the user's home directory (`~`):
   people/       (empty directory)
 ```
 
-Seed the starter files:
-
-**~/wiki/index.md**
+**~/wiki/index.md:**
 ```markdown
 # Wiki Index
 
-Master catalog of everything I know. I read this first every session.
+Everything I know about you and your work. I read this first every session.
 
 ## About You
-- [me/profile.md](me/profile.md) — Who you are, what you do, how you work
+- [me/profile.md](me/profile.md) — Who you are, how you work, what you prefer
 
 ## Projects
-(nothing yet — I'll add these as we work together)
 
 ## Topics
-(nothing yet — I'll add these as they come up)
 
 ## People
-(nothing yet — I'll remember people when you mention them)
 ```
 
-**~/wiki/log.md**
+**~/wiki/log.md:**
 ```markdown
 # Session Log
 
-Chronological record of our conversations.
+What we talked about, what I learned, what changed.
 
 ---
 ```
 
-**~/wiki/me/profile.md**
+**~/wiki/me/profile.md:**
 ```markdown
 # About You
 Last updated: (today's date)
 
-(I don't know anything about you yet. Tell me about yourself and I'll
-fill this in.)
+## Identity
+
+## Work Style
+
+## Preferences
+
+## Opinions
+
+(I'll fill these in as I learn about you.)
 ```
 
-Tell the user:
-> "I created your wiki at ~/wiki/. This is where I'll store everything I learn
-> about you. It's all plain markdown — you can open it in any text editor and
-> see, edit, or delete anything."
+Tell the user what you just did and why:
+> "I created ~/wiki/ — a folder of markdown files where I'll keep everything I
+> learn about you. Think of it as my notebook. Right now it's mostly empty, but
+> every conversation fills it in. You can open these files anytime to see what
+> I know, correct anything I got wrong, or add your own notes."
 
-### Step 2: Add Memory Instructions to Global Config
+### Step 2: Install Memory Instructions
 
-The user's global config is `~/.claude/CLAUDE.md`. This file loads into every
-Claude Code session across all their projects.
-
-If the file doesn't exist, create it with the content below.
-If it already exists, **append** the content below — never overwrite.
-
-**Add this to ~/.claude/CLAUDE.md:**
+Add the following to `~/.claude/CLAUDE.md` (the user's global config that loads
+into every Claude Code session). If the file exists, **append** — never
+overwrite existing content.
 
 ```markdown
 ## Memory System
 
-You maintain a persistent wiki at ~/wiki/ that compounds your knowledge over
-time. This is your long-term memory — it survives across sessions and projects.
+You have a persistent wiki at ~/wiki/. Use it to be a better assistant — not
+just to store facts, but to genuinely improve the user's experience over time.
 
-### Every Session Start
+### On Session Start
 
-1. Read ~/wiki/index.md — this is your table of contents
-2. Based on the user's first message, read the most relevant wiki pages
-3. Use this knowledge naturally — greet by name, reference projects, respect
-   preferences
-4. If ~/wiki/ doesn't exist, create the structure (index.md, log.md, me/,
-   topics/, projects/, people/)
+1. Read ~/wiki/index.md
+2. Read ~/wiki/me/profile.md
+3. Based on what the user says first, read any relevant project/topic/people
+   pages
+4. If ~/wiki/ doesn't exist, create it (index.md, log.md, me/profile.md, and
+   empty directories for topics/, projects/, people/)
 
-### During Conversation
+### How to Use What You Know
 
-When you learn something new, write it to the wiki immediately:
+The wiki is only valuable if you USE it. Here's how:
 
-- About the user → update ~/wiki/me/profile.md
-- A project they mention → create or update ~/wiki/projects/[name].md
-- A topic worth remembering → create or update ~/wiki/topics/[name].md
-- A person they mention → create or update ~/wiki/people/[name].md
-- A correction ("actually I prefer X") → fix the relevant page immediately
+**Adapt your communication.** If the user prefers terse responses, be terse.
+If they like detailed explanations, explain. If they hate emojis, don't use
+them. Match THEIR style, not a default.
 
-Page guidelines:
-- Bullet points over paragraphs — keep them scannable
-- Add "Last updated: YYYY-MM-DD" at the top of each page
-- Link between related pages: [related](../topics/foo.md)
-- One page per subject
+**Match their skill level.** A senior engineer doesn't need you to explain what
+a callback is. A beginner does. Read me/profile.md and calibrate — don't
+over-explain to experts or under-explain to learners.
 
-### Session End
+**Remember their stack.** When suggesting solutions, use the tools and languages
+they actually use. If they're a Go shop, don't suggest Python solutions. If they
+use pnpm, don't write npm commands. Check their project pages.
 
-Before conversation ends:
-1. Append a log entry to ~/wiki/log.md:
-   ```
-   ## [YYYY-MM-DD] Brief topic summary
-   - Key things discussed
-   - What I learned about user
-   - Pages created: (list)
-   - Pages updated: (list)
-   ```
-2. Update ~/wiki/index.md if new pages were created
+**Know their projects.** When they mention a project by name, you should already
+know what it is, what it's built with, and what they were working on last time.
+Don't make them re-explain. Read the project page and pick up where they left
+off.
 
-### What to Remember
+**Apply their preferences.** If they told you they prefer functional style,
+write functional code — every time, without being asked again. If they hate
+ORMs, don't suggest one. Preferences in the wiki are standing instructions.
 
-- Identity: name, role, company, location, timezone
-- Work style: preferred tools, coding conventions, communication preferences
-- Opinions: likes, dislikes, pet peeves, enthusiasms
-- Projects: what they build, tech stack, status, goals, blockers
-- People: colleagues, family, collaborators — names and context
-- Corrections: when they fix a mistake, the correction matters most
-- Recurring themes: topics that keep coming up
+**Use people context.** When they mention a colleague by name, you should know
+who that person is and their role. "Can you help me review Sarah's PR" should
+not prompt "Who is Sarah?"
+
+**Anticipate based on patterns.** If they always start Monday sessions by
+checking CI, expect that. If they tend to context-switch between two projects,
+be ready for both. The session log (log.md) reveals patterns — use them.
+
+### When to Write
+
+Update the wiki whenever you learn something that would make future sessions
+better:
+
+- **User info** → ~/wiki/me/profile.md
+  Name, role, company, timezone, skill level, communication style,
+  preferences, opinions, tools they use, things they hate
+- **Projects** → ~/wiki/projects/[name].md
+  What it is, tech stack, status, current focus, blockers, decisions made
+- **Topics** → ~/wiki/topics/[name].md
+  Things they care about, their opinions, gotchas they've discovered
+- **People** → ~/wiki/people/[name].md
+  Name, role, relationship, context — enough to not ask "who?"
+- **Corrections** → Update the relevant page IMMEDIATELY
+  A correction is more important than the original fact. When the user says
+  "actually, I prefer X" or "no, we switched to Y" — update the page right
+  away and remove the wrong information.
+
+### How to Write
+
+- Bullet points, not paragraphs
+- "Last updated: YYYY-MM-DD" at the top of each page
+- Link between related pages: [see project](../projects/foo.md)
+- One page per subject — don't cram
+- Be specific: "prefers Tailwind over Bootstrap" not "has CSS preferences"
+
+### Session Logging
+
+Before the conversation ends, append to ~/wiki/log.md:
+```
+## [YYYY-MM-DD] Brief topic summary
+- What we discussed
+- What I learned about user
+- Pages created: (list)
+- Pages updated: (list)
+```
+
+Update ~/wiki/index.md if any new pages were created.
 
 ### Never Save
 
-- Passwords, API keys, tokens, secrets — never
-- Throwaway questions that won't matter tomorrow
-- Anything the user asks you not to remember
+- Passwords, API keys, tokens, secrets — absolutely never
+- One-off questions that won't matter tomorrow
+- Anything the user explicitly asks you to forget
 
 ### Maintenance
 
-When idle, check the wiki for:
-- Contradictions between pages
-- Outdated info to update or remove
-- Overlapping pages to merge
-- Orphan pages missing from index.md
+Periodically scan the wiki for:
+- Contradictions between pages — resolve using the most recent info
+- Stale information — update or remove
+- Pages that overlap — merge them
+- Missing index entries — add them
 ```
 
 Tell the user:
-> "I added memory instructions to ~/.claude/CLAUDE.md. Every Claude Code
-> session you open — in any project — will now read your wiki and keep it
-> updated."
+> "I installed memory instructions in your global Claude config. From now on,
+> every Claude Code session — in any project, any folder — starts by reading
+> your wiki. But it's not just about remembering facts. It's about using what I
+> know to actually help you better: matching your style, knowing your stack,
+> remembering your projects, respecting your preferences. The more we work
+> together, the more I can do that."
 
-### Step 3: First Run
+### Step 3: First Conversation
 
 Ask the user:
-> "Let's test the system. Tell me about yourself — your name, what you do, and
-> what you're working on right now."
+> "Let's get started. Tell me about yourself — your name, what you do, what
+> you're working on, and how you like your AI to communicate. Terse? Detailed?
+> Casual? Technical? Whatever you prefer."
 
 When they respond:
-1. Update ~/wiki/me/profile.md with what they shared
-2. Create project pages for anything they mentioned
+1. Update ~/wiki/me/profile.md with everything — identity, role, style, stack
+2. Create project pages for anything they mention
 3. Update ~/wiki/index.md with new pages
-4. Read the updated profile back to them so they can see it
+4. Show them the updated profile so they can see what you captured
 
-Then say:
-> "Your wiki is live. Try closing this session and starting a new one — I'll
-> already know who you are."
+Then:
+> "That's your wiki with real data now. Next session, I'll read all of this
+> before I say a word to you. I'll know your name, your projects, and how you
+> like to work. Try closing this and starting fresh — you'll see the
+> difference immediately."
 
-### Step 4: Explain What Happened
+### Step 4: Teach the User
 
-> "Here's what you have now:
+Explain the system so they own it:
+
+> "Here's what you have:
 >
-> Every time you open Claude Code, I read ~/wiki/index.md first. That tells me
-> what pages exist. Based on what you ask, I pull in the relevant ones.
+> **~/wiki/** is a folder of plain markdown files — your AI's long-term memory.
+> I read it at the start of every session and write to it as I learn things.
 >
-> As we talk, I update pages with new things I learn. When we're done, I log
-> what happened.
+> **~/.claude/CLAUDE.md** is your global config. It tells every Claude Code
+> session to use the wiki and HOW to use it — not just storing facts, but
+> applying them to give you better answers.
 >
-> It's all plain text. Open ~/wiki/ in any editor — that's everything I know
-> about you. Edit anything, I'll pick up your changes next session.
+> You're in complete control. Open ~/wiki/ in any editor. Read what I know.
+> Fix anything wrong. Add your own notes — I'll pick them up. Delete something
+> you don't want me to remember — gone.
 >
-> Each session builds on the last. The more we work together, the better I
-> get."
+> The system compounds. Session 1 is generic. Session 10 is personalized.
+> Session 50, I know your stack, your team, your opinions, your patterns. I
+> stop being a generic AI and start being YOUR AI."
 
-### Step 5: Going Further (only if they ask)
+### Step 5: What's Next (only if they ask)
 
-If the user asks "what else can I do?", mention these in order:
+If the user wants to go further, offer these in order:
 
-1. **Project CLAUDE.md** — Put a CLAUDE.md in any git repo for project-specific
-   instructions. Claude reads both global and project configs.
+1. **Project CLAUDE.md** — Drop a CLAUDE.md in any repo with project-specific
+   instructions (coding standards, architecture notes, deployment process).
+   Claude reads both global and project configs.
 
-2. **Built-in memory** — Claude Code has a native memory system with typed
-   memories per-project. Type `/init` in any project to set it up.
+2. **Built-in memory** — Claude Code has a native `/memory` system with typed
+   memories per-project. Type `/init` in any repo to set it up. Works alongside
+   the wiki.
 
-3. **Context Mode** — Indexes your codebase for semantic search. Great for
-   large projects: `npx -y @anthropic-ai/context-mode@latest init`
+3. **Context Mode** — Semantic codebase indexing. Claude can search your whole
+   project intelligently. Install:
+   `npx -y @anthropic-ai/context-mode@latest init`
 
-4. **Nellie** — Persistent semantic memory server with knowledge graphs across
-   all projects and sessions.
+4. **Nellie** — A semantic memory server with lessons, checkpoints, and
+   knowledge graphs across all your projects.
 
-Don't push these. Just plant the seed.
+Don't push. Just mention they exist.
 
 ---
 
 ## How It Works (For Humans)
 
-### The Core Idea
+### The Idea
 
-Your AI maintains a personal wiki — a folder of markdown files about you, your
-projects, and things you care about. Before answering anything, it reads the
-wiki. After learning something, it writes to the wiki. Over time, it
-accumulates real understanding of your context.
+Andrej Karpathy proposed that LLMs should maintain their own persistent
+knowledge base — a wiki of plain text files that the AI reads and writes across
+sessions. Instead of starting every conversation from zero, the AI consults its
+notes first.
 
-### What's in the Wiki
+We extended that idea with structure (typed pages, indexes, cross-references),
+a session lifecycle (read → use → learn → log), and most importantly: **rules
+for how to apply the knowledge**, not just how to store it.
+
+The result: an AI that doesn't just remember your name — it remembers that you
+prefer functional style, you're building a Go microservice, your teammate Alice
+owns the auth module, and you hate being asked questions you already answered.
+
+### The Wiki
 
 ```
 ~/wiki/
   index.md              Table of contents — read first every session
-  log.md                Session history — what you talked about and when
-  me/profile.md         Your name, role, preferences, how you work
-  projects/myapp.md     A project — tech stack, status, goals
-  topics/docker.md      A topic — your notes, preferences, gotchas
-  people/alice.md       A person — role, relationship, context
+  log.md                Session history
+  me/profile.md         Who you are and how you work
+  projects/myapp.md     A project — stack, status, goals
+  topics/docker.md      A topic — notes, preferences, gotchas
+  people/alice.md       A person — role, context
 ```
 
-### The Session Lifecycle
+### The Lifecycle
 
 ```
- Start Session          During Conversation          End Session
-      |                        |                         |
-      v                        v                         v
- Read index.md ──>       Learn something ──>       Append to log.md
- Read relevant pages     Write to wiki page         Update index.md
-      |
-      v
- Personalize responses
+ Start Session           During Conversation           End Session
+      |                         |                          |
+      v                         v                          v
+ Read wiki ──>            Learn something ──>        Log what happened
+ Know the user            Write to wiki              Update index
+      |                         |
+      v                         v
+ Better answers            Better wiki
 ```
 
-### Why Plain Markdown
+### Why It Works
 
-- **Portable** — just files. Back them up, sync them, version them
-- **Readable** — open in any editor. No database, no binary blobs
-- **Editable** — you're in control. Fix anything Claude got wrong
-- **Durable** — no server to crash, no account to expire
+- **Compounds** — each session adds to the knowledge base. Early sessions are
+  generic; later sessions are deeply personalized.
+- **Corrections stick** — tell Claude once that you prefer X. It updates the
+  wiki. Every future session reads that preference.
+- **User-controlled** — it's your files. Read them, edit them, delete them.
+  Nothing hidden, nothing locked.
+- **Zero maintenance** — Claude manages the wiki automatically. You only touch
+  it if you want to.
 
 ## FAQ
 
-**Where does the wiki live?**
-`~/wiki/` — your home directory. Works across all projects.
+**Will this slow down my sessions?**
+No. Reading small markdown files takes milliseconds.
 
 **Can I edit the wiki?**
-Yes. It's your data. Edit anything, Claude picks up changes next session.
+Yes — it's your data. Edit, add, delete. Claude picks up changes next session.
 
 **Does this work with the Claude desktop app?**
-No — this is for Claude Code (the CLI and IDE extensions). The desktop app
-doesn't have filesystem access.
-
-**Will this slow things down?**
-No. Reading a few small markdown files takes milliseconds.
+No. This is for Claude Code (CLI and IDE extensions) which has filesystem access.
 
 **What about per-project memory?**
-Claude Code has a built-in per-project system. Run `/init` in any repo. The
-wiki and built-in memory work side by side.
+Claude Code has a built-in per-project system. Run `/init` in any repo. The wiki
+and built-in memory complement each other.
+
+**Can I sync the wiki across machines?**
+Yes. It's just files. Use git, Dropbox, iCloud Drive, Syncthing — whatever you
+use for files.
 
 ## Credits
 
 Based on Andrej Karpathy's concept of LLMs maintaining persistent wiki-style
 knowledge bases. Extended with structured page types, session lifecycle,
-cross-referencing, and an interactive teaching flow.
+cross-referencing, and behavioral instructions for applying knowledge to improve
+user experience.
 
 Built by [Mike Morris](https://github.com/mmorris35).
 
