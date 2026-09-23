@@ -281,9 +281,11 @@ If the user wants to go further, offer these in order:
    memories per-project. Type `/init` in any repo to set it up. Works alongside
    the wiki.
 
-3. **Context Mode** — Semantic codebase indexing. Claude can search your whole
-   project intelligently. Install:
-   `npx -y @anthropic-ai/context-mode@latest init`
+3. **Context Mode** — Keeps large tool output out of the context window and
+   persists session memory. Third-party ([mksglu/context-mode](https://github.com/mksglu/context-mode),
+   Elastic License 2.0), not from Anthropic. Install, in a Claude Code session:
+   `/plugin marketplace add mksglu/context-mode` then
+   `/plugin install context-mode@context-mode`
 
 4. **Nellie** — A semantic memory server with lessons, checkpoints, and
    knowledge graphs across all your projects.
